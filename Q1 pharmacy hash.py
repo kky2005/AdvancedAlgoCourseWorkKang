@@ -1,5 +1,7 @@
 """
 Question 1: Hashing - Pharmacy Inventory Management System
+
+Data is loaded from and saved to 'Medicines.txt'
 ============================================================
 """
 

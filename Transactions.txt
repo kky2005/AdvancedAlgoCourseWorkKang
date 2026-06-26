@@ -1,0 +1,24 @@
+# TranSys Transaction Data File
+# Format: transaction_id|customer_name|product_name|amount|transaction_date
+# Lines starting with '#' are comments and will be ignored.
+# Do NOT edit transaction_id as it is the primary sort/search key.
+1015|Alice Tan|Gaming Mouse|189.90|12/03/2025
+1003|Bob Lim|USB-C Hub|79.50|01/01/2025
+1022|Carol Wong|Mechanical Keyboard|299.00|20/04/2025
+1008|David Ng|Wireless Earbuds|249.00|15/02/2025
+1030|Eve Rashid|Laptop Stand|55.90|30/05/2025
+1001|Frank Tan|HDMI Cable|25.00|01/01/2025
+1019|Grace Liu|Webcam HD 1080p|189.00|08/04/2025
+1011|Henry Aziz|Portable SSD 1TB|359.00|28/02/2025
+1027|Irene Chong|Smart Watch|799.00|10/05/2025
+1005|James Kumar|Phone Case|35.50|05/01/2025
+1024|Karen Lee|Noise Cancelling Headphones|499.00|25/04/2025
+1013|Leo Mahmud|Desk Lamp LED|89.90|05/03/2025
+1029|Mia Tan|Ergonomic Chair|1250.00|28/05/2025
+1002|Nathan Ooi|Screen Protector|18.90|01/01/2025
+1017|Olivia Singh|Tablet Stand|65.00|20/03/2025
+1006|Paul Yap|Bluetooth Speaker|159.00|10/01/2025
+1025|Quinn Ibrahim|Mechanical Pencil Set|45.00|01/05/2025
+1010|Rachel Foo|Cable Management Kit|39.00|25/02/2025
+1020|Sam Kok|Monitor 27-inch|1099.00|12/04/2025
+1004|Tina Abdullah|Mouse Pad XL|49.90|03/01/2025

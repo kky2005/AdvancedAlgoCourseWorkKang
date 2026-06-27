@@ -15,7 +15,6 @@ Runs 10 rounds for each experiment and reports T per round + average T.
 
 import threading
 import time
-import math
 import os
 
 
@@ -39,7 +38,7 @@ def factorial(n: int) -> int:
     Big-O:
       T(n) = 1 + 4n
       As n → ∞, the constant 1 and coefficient 4 are dropped.
-      ∴ Big-O = O(n)
+      Therefore, Big-O = O(n)
 
     Time complexity explanation:
       The function performs exactly n multiplications — one per integer
@@ -131,7 +130,7 @@ def run_multithreaded_experiment(rounds: int = 10) -> list:
         t_values.append(T)
         print(f"  {r:<8} {t1:<30,} {t2:<30,} {T:>15,}")
 
-    avg_T = sum(t_values) // rounds
+    avg_T = max(1, sum(t_values) // rounds)   # max(1,...) prevents ZeroDivisionError
     print("  " + "─" * 95)
     print(f"  {'Average T':>69} {avg_T:>15,} ns")
     print(f"  {'':>69} {avg_T / 1_000_000:.4f} ms")
@@ -173,7 +172,7 @@ def run_sequential_experiment(rounds: int = 10) -> list:
         t_values.append(T)
         print(f"  {r:<8} {t1:<30,} {t2:<30,} {T:>15,}")
 
-    avg_T = sum(t_values) // rounds
+    avg_T = max(1, sum(t_values) // rounds)   # max(1,...) prevents ZeroDivisionError
     print("  " + "─" * 95)
     print(f"  {'Average T':>69} {avg_T:>15,} ns")
     print(f"  {'':>69} {avg_T / 1_000_000:.4f} ms")
@@ -196,8 +195,8 @@ def print_comparison(mt_values: list, seq_values: list):
         faster = "MT faster" if diff > 0 else "SEQ faster"
         print(f"  {i+1:<8} {mt_values[i]:>22,} {seq_values[i]:>22,} {diff:>18,}  ({faster})")
 
-    avg_mt  = sum(mt_values)  // rounds
-    avg_seq = sum(seq_values) // rounds
+    avg_mt  = max(1, sum(mt_values)  // rounds)   # max(1,...) prevents ZeroDivisionError
+    avg_seq = max(1, sum(seq_values) // rounds)   # if times round to 0, treat as 1 ns
     avg_diff = avg_seq - avg_mt
 
     print("  " + "─" * 76)
@@ -235,88 +234,14 @@ def print_comparison(mt_values: list, seq_values: list):
     print(f"  used instead, as each process has its own GIL and Python interpreter.")
 
 
-# =============================================================================
-# SECTION 6: Concurrent vs Parallel Discussion
-# =============================================================================
 
-def print_concurrency_discussion():
-    print("\n  ── Q3.1: Concurrent vs Parallel Processing in Python ────────────────────")
-    print("""
-  In Python, multithreading achieves CONCURRENT processing, NOT parallel processing.
 
-  CONCURRENT PROCESSING:
-    Multiple threads exist and make progress over time by rapidly switching
-    between each other (context switching). At any single instant, only ONE
-    thread is actually executing Python bytecode. This is enforced by
-    Python's Global Interpreter Lock (GIL) — a mutex that allows only one
-    thread to hold control of the Python interpreter at a time.
 
-    The diagram shows threads A, B, C with wavy/interleaved lines — this
-    visually represents concurrent execution: threads take turns running,
-    not running side-by-side simultaneously.
 
-  PARALLEL PROCESSING:
-    Multiple tasks run SIMULTANEOUSLY on multiple CPU cores at the exact
-    same instant. True parallelism in Python requires the 'multiprocessing'
-    module, where each process has its own Python interpreter and GIL.
-
-  WHY PYTHON USES CONCURRENT (NOT PARALLEL) THREADS:
-    The GIL was introduced to protect CPython's memory management (reference
-    counting) from race conditions. It simplifies thread safety but limits
-    CPU-bound thread performance.
-
-  CONCLUSION:
-    Python multithreading = CONCURRENT (interleaved, one at a time via GIL)
-    Python multiprocessing = PARALLEL  (truly simultaneous, separate GILs)
-  """)
 
 
 # =============================================================================
-# SECTION 7: Big-O Discussion
-# =============================================================================
-
-def print_bigO_discussion():
-    print("\n  ── Q3.2: Factorial Big-O Derivation ─────────────────────────────────────")
-    print("""
-  Function: factorial(n)
-
-  def factorial(n: int) -> int:
-      result = 1                  ← 1 primitive operation (assignment)
-      for i in range(1, n + 1):  ← loop executes n times
-          result = result * i     ← 1 multiplication per iteration  = n ops
-                                  ← 1 assignment per iteration      = n ops
-                                  ← 1 loop counter increment        = n ops
-                                  ← 1 loop condition check (i <= n) = n ops
-      return result               ← 1 return operation
-
-  Counting all primitive operations:
-      T(n) = 1 (initial assignment)
-           + n (multiplications)
-           + n (assignments inside loop)
-           + n (increments)
-           + n (condition checks)
-           + 1 (return)
-           = 4n + 2
-
-  Big-O Derivation:
-      T(n) = 4n + 2
-      Drop constants and coefficients (Big-O ignores them):
-      Therefore, Big-O = O(n)
-
-  Time Complexity Explanation:
-      The factorial function is LINEAR — O(n). This means:
-        - If n doubles, the computation time approximately doubles.
-        - If n = 50,  approximately 200 + 2 = 202 operations.
-        - If n = 100, approximately 400 + 2 = 402 operations.
-        - If n = 200, approximately 800 + 2 = 802 operations.
-      There is no nested loop, no recursion, and no branching that depends
-      on the input size. The single for-loop iterating from 1 to n is the
-      only source of growth, giving a straightforward O(n) complexity.
-  """)
-
-
-# =============================================================================
-# SECTION 8: Main Program
+# SECTION 6: Main Program
 # =============================================================================
 
 def print_header():
@@ -328,12 +253,6 @@ def print_header():
 
 def main():
     print_header()
-
-    # Q3.1 — Concurrent vs Parallel discussion
-    print_concurrency_discussion()
-
-    # Q3.2 — Big-O discussion
-    print_bigO_discussion()
 
     # Verify factorial results are correct
     print("\n  ── Factorial Verification ───────────────────────────────────────────────")
